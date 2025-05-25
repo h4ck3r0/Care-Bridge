@@ -11,14 +11,47 @@ const {
 const Appointment = require('../models/Appointment');
 const { io } = require('../socket');
 
-// Debug middleware
+// Debug and error handling middleware
 router.use((req, res, next) => {
     console.log('Appointment route accessed:', {
         path: req.path,
         method: req.method,
         query: req.query,
-        auth: req.headers.authorization
+        auth: req.headers.authorization,
+        user: req.user ? {
+            id: req.user._id,
+            role: req.user.role
+        } : 'No user'
     });
+
+    // Add error handler specific to this route
+    res.handleError = (error) => {
+        console.error('Appointment route error:', {
+            message: error.message,
+            stack: error.stack,
+            path: req.path,
+            method: req.method
+        });
+
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({
+                message: 'Validation error',
+                errors: Object.values(error.errors).map(err => err.message)
+            });
+        }
+
+        if (error.name === 'CastError') {
+            return res.status(400).json({
+                message: 'Invalid ID format'
+            });
+        }
+
+        res.status(error.status || 500).json({
+            message: error.message || 'Internal server error',
+            error: process.env.NODE_ENV === 'development' ? error : undefined
+        });
+    };
+
     next();
 });
 
@@ -170,4 +203,12 @@ router.patch('/:id/messages/read', protect, async (req, res) => {
 // Cancel appointment
 router.delete('/:id', protect, cancelAppointment);
 
-module.exports = router; 
+// Global error handler for this router
+router.use((err, req, res, next) => {
+    if (res.headersSent) {
+        return next(err);
+    }
+    res.handleError(err);
+});
+
+module.exports = router;
