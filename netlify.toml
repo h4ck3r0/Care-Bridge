@@ -14,12 +14,12 @@
     Content-Type = "application/javascript"
 
 [build]
-  command = "npm run build"
-  publish = "./client/dist"
-  base = "."
+  command = "cd client && npm install && npm run build"
+  publish = "client/dist"
+  base = "/"
 
 [build.environment]
-  NODE_VERSION = "16"
+  NODE_VERSION = "20"
   NPM_FLAGS = "--no-audit --no-fund"
 
 [[redirects]]
