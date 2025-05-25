@@ -14,7 +14,7 @@
     Content-Type = "application/javascript"
 
 [build]
-  command = "cd client && npm install && npm run build"
+  command = "cd client && npm install --legacy-peer-deps && npm run build"
   publish = "client/dist"
   base = "/"
 
