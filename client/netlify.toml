@@ -1,0 +1,24 @@
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Content-Type = "application/javascript"
+
+[[headers]]
+  for = "/*.mjs"
+  [headers.values]
+    Content-Type = "application/javascript"
+
+[build]
+  command = "npm run build"
+  publish = "./client/dist"
+  base = "."
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
