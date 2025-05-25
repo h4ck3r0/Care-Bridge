@@ -1,16 +1,15 @@
 import { io } from 'socket.io-client';
 
+const SOCKET_URL = 'wss://care-bridge-onz4.onrender.com';
 let socket = null;
 
 export const initializeSocket = (token) => {
     if (!socket) {
-        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-        
-        socket = io(API_URL, {
+        socket = io(SOCKET_URL, {
             auth: {
                 token
             },
-            transports: ['websocket', 'polling'],
+            transports: ['websocket'],
             reconnection: true,
             reconnectionAttempts: 5,
             reconnectionDelay: 1000
@@ -52,37 +51,18 @@ export const disconnectSocket = () => {
     }
 };
 
-// Queue event handlers
 export const subscribeToQueueUpdates = (hospitalId, callback) => {
     const socket = getSocket();
     const eventName = `queue_update:${hospitalId}`;
-    
     socket.off(eventName);
-    
-    socket.on(eventName, (data) => {
-        console.log(`Received queue update for hospital ${hospitalId}:`, data);
-        callback(data);
-    });
-    
-    return () => {
-        console.log(`Unsubscribing from queue updates for hospital ${hospitalId}`);
-        socket.off(eventName);
-    };
+    socket.on(eventName, callback);
+    return () => socket.off(eventName);
 };
 
 export const subscribeToPatientUpdates = (patientId, callback) => {
     const socket = getSocket();
     const eventName = `patient_update:${patientId}`;
-    
     socket.off(eventName);
-    
-    socket.on(eventName, (data) => {
-        console.log(`Received patient update for patient ${patientId}:`, data);
-        callback(data);
-    });
-    
-    return () => {
-        console.log(`Unsubscribing from patient updates for patient ${patientId}`);
-        socket.off(eventName);
-    };
-}; 
+    socket.on(eventName, callback);
+    return () => socket.off(eventName);
+};

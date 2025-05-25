@@ -9,9 +9,10 @@ export default defineConfig({
     port: 5173,
     cors: true,
     headers: {
+      'Access-Control-Allow-Origin': '*',
       'Content-Security-Policy': `
         default-src 'self';
-        connect-src 'self' https://care-bridge-onz4.onrender.com;
+        connect-src 'self' https://care-bridge-onz4.onrender.com https://*.onrender.com;
         script-src 'self' 'unsafe-inline' 'unsafe-eval';
         style-src 'self' 'unsafe-inline';
       `.replace(/\s+/g, ' ').trim()
