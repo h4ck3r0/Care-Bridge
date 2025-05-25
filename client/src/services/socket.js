@@ -4,9 +4,9 @@ let socket = null;
 
 export const initializeSocket = (token) => {
     if (!socket) {
-        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
         
-        socket = io(API_URL, {
+        socket = io(SOCKET_URL, {
             auth: {
                 token
             },

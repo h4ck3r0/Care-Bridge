@@ -20,7 +20,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: process.env.NODE_ENV === 'production'
-          ? 'https://tourmaline-unicorn-570ae9.netlify.app'
+          ? 'https://care-bridge-onz4.onrender.com'
           : 'http://localhost:5000',
         changeOrigin: true
       }
