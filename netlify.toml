@@ -1,7 +1,7 @@
 [[headers]]
   for = "/*"
   [headers.values]
-    Content-Security-Policy = "default-src 'self' https://care-bridge-onz4.onrender.com; connect-src 'self' https://care-bridge-onz4.onrender.com wss://care-bridge-onz4.onrender.com; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
+    Content-Security-Policy = "default-src 'self' https://care-bridge-onz4.onrender.com; connect-src 'self' http://localhost:5000 https://care-bridge-onz4.onrender.com wss://care-bridge-onz4.onrender.com; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
 
 [[headers]]
   for = "/*.js"
